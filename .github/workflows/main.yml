@@ -5,9 +5,9 @@ on:
     branches: [main]
   workflow_dispatch: 
   schedule: 
-    - cron: 30 02 * * * # 8 AM IST Every day
-    - cron: 00 14 * * * # 7:30 PM IST Every day
-    - cron: 00 06 * * 1-5 # 6 AM IST Mon- Fri
+   # - cron: 30 02 * * * # 8 AM IST Every day
+   # - cron: 00 14 * * * # 7:30 PM IST Every day
+    - cron: 00 06 * * 5 # 6 AM IST Mon- Fri
 
 jobs: 
   run-postman-test: 
@@ -49,6 +49,27 @@ jobs:
         with: 
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: newman/
+          
+      - name: Send a email notification
+        if: always()
+        uses: dawidd6/action-send-mail@v6
+        with: 
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }} #Its a app password created in gmail account
+          subject: Inwarrenty flow Test execution Notification
+          to: tshelar8@gmail.com
+          from: ${{ secrets.EMAIL_USERNAME }}
+          body: |
+                Hi,
+                Phoenix Inwarranty flow has been executed. The report has been published and the url
+                is: https://tushars007.github.io/Inwarranty-Flow/
+          
+          
+        
+        
+          
 
        
     
