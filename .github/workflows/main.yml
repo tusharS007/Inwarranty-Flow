@@ -41,7 +41,13 @@ jobs:
         with:
           name: Newman Report
           path: newman/*.html
-        
+
+      - name: Creating github page branch
+        if: always() # ensure if previous steps fails in that case also this code will execute
+        uses: peaceiris/actions-gh-pages@v4.0.0
+        with: 
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: newman/
 
        
     
